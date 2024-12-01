@@ -24,7 +24,7 @@ AoC_2024
 
 ## Requirements
 
-- Python 3.12
+- Python 3.12 or 3.10
 - Optional: PyCharm IDE for enhanced development experience
 - A virtual environment is set up for managing dependencies.
 

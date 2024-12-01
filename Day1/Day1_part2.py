@@ -10,12 +10,14 @@ for pair in pairs:
     left.append(split[0])
     right.append(split[1])
 
-left.sort()
-right.sort()
-sum = 0
+sim = 0
 
-for i, loc in enumerate(left):
-    distance = abs(int(loc) - int(right[i]))
-    sum += distance
+for loc_l in left:
+    count = 0
+    for loc_r in right:
+        if loc_l == loc_r:
+            count += 1
 
-print(sum)
+    sim += (int(loc_l) * count)
+
+print(sim)
