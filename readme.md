@@ -70,7 +70,7 @@ Each day's solution can be found in the corresponding `DayX` folder.
 2. Run the script:
 
     ```bash
-    python Day1.py
+    python day_1.py
     ```
 
 ### Utilities
