@@ -20,11 +20,20 @@ def check_needed_rules(rules, update):
     for page in pages:
         for rule in rules:
             if page == rule[:2]:
-                applied_rules += [rule]
+                for sec_page in pages:
+                    if sec_page == rule[3:]:
+                        applied_rules += [rule]
+
     return applied_rules
 
 def check_single_page(index, pages, rules):
-    return False
+    for rule in rules:
+        for i, page in enumerate(pages):
+            rule_number = rule[3:]
+            if rule[3:] == page and i < index:
+                return False
+
+    return True
 
 def check_conflict(applied_rules, update):
     pages = update.split(",")
@@ -34,16 +43,21 @@ def check_conflict(applied_rules, update):
             if page == rule[:2]:
                 rules_per_number += [rule]
         if not check_single_page(i, pages, rules_per_number):
-            break
+            return False
     return True
 
 
 input = read_file("input.txt")
+sum = 0
 rules, updates = split_input(input)
-for update in updates:
+for i, update in enumerate(updates):
     applied_rules = check_needed_rules(rules, update)
-    print(f"\nUpdate:\n{update}")
+    print(f"\nUpdate:\n{update}\nRules: {applied_rules}")
     if(check_conflict(applied_rules, update)):
-        print("Conflict")
+        ups = update.split(",")
+        print(f"No Conflict:\nsum = {sum} + {ups[int(len(ups)/2)]} = {sum + int(ups[int(len(ups)/2)])}")
+        sum += int(ups[int(len(ups)/2)])
     else:
-        print("No Conflict")
+        print("Conflict")
+
+print("\nResult: ", sum)
