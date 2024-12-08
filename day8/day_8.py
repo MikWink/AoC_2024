@@ -21,6 +21,7 @@ for i in range(len(map)):
 for frequency in antennas:
     if frequency == []:
         continue
+    print(frequency)
     for i, position in enumerate(frequency):
         if i == len(frequency):
             break
