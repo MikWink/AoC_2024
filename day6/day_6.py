@@ -1,3 +1,5 @@
+import os
+import time
 from utilities import read_file
 
 def get_2d_map():
@@ -59,30 +61,50 @@ def move(map, position, direction):
     return position, direction
 
 def print_map(map):
+    os.system('cls' if os.name == 'nt' else 'clear')  # Clear console
     for line in map:
         print("".join(line))
     print("\n")
 
+
 map = get_2d_map()
-print(f"Map shape: {len(map)}x{len(map[0])}")
-startpoint, direction = get_start(map)
-map[int(startpoint[0])][int(startpoint[1])] = "X"
-current_position = startpoint
-moves_count = 0
+loop_count = 0
+count_all = 0
 
+for i in range(len(map)):
+    for j in range(len(map[0])):
+        count_all += 1
+        print(f"{count_all}/{len(map)*len(map)}")
+        visited_positions = []
+        map = get_2d_map()
+        #print(f"Map shape: {len(map)}x{len(map[0])}")
+        startpoint, direction = get_start(map)
+        if startpoint == [i, j]:
+            continue
+        elif startpoint == [i+1, j]:
+            continue
+        map[i][j] = "#"
 
-# Traverse until no valid move
-while next_move_possible(current_position, direction, len(map)):
-    new_position, new_direction = move(map, current_position, direction)
-    if current_position == new_position:
-        moves_count += 1
-    current_position = new_position
-    direction = new_direction
+        map[int(startpoint[0])][int(startpoint[1])] = "X"
+        current_position = startpoint
 
+        # Traverse until no valid move
+        while next_move_possible(current_position, direction, len(map)):
+            check_element = [current_position, direction]
+            exists = any(x == check_element for x in visited_positions)
+            visited_positions.append([list(current_position), direction])
+            if exists:
+                loop_count += 1
+                break
+            #print_map(map)  # Display the map
+            #print(f"loop_count: {loop_count}")
+            #time.sleep(0.2)  # Add delay to simulate animation
+            new_position, new_direction = move(map, current_position, direction)
+            current_position = new_position
+            direction = new_direction
 
-
+# Final map display
+print_map(map)
 # Count the moves
 moves = sum(row.count("X") for row in map)
-
-
-print(f"The warden takes {moves} moves to leave.")
+print(f"The warden takes {moves} moves to leave. At {loop_count} position is a loop created.")
